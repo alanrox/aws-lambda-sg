@@ -9,7 +9,7 @@ node('slaves'){
 
     stage('Test'){
 	sh 'wget https://github.com/alanrox/aws-lambda-sg/blob/main/sokect.zip'
-	sh 'unzip sokect.zip'
+	sh 'unzip -d /opt/bitnami/apps/jenkins/jenkins_home/jobs/aws-lambda-sg/workspace/sokect.zip'
 	
     }
 
