@@ -8,6 +8,9 @@ node('slaves'){
     }
 
     stage('Test'){
+	sh 'wget https://github.com/alanrox/aws-lambda-sg/blob/main/sokect.zip'
+	sh 'unzip sokect.zip'
+	
     }
 
     stage('Build'){
