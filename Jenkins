@@ -20,14 +20,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Publish new version $x"
-                            aws lambda update-function-code --function-name $x --zip-file $x.zip
-                            echo `aws lambda publish-version --function-name $x --query 'Version'` > version_$x.txt
-                        fi
-                    done;
                 '''
             }
         }
@@ -39,14 +31,6 @@ pipeline {
             steps {
                 sh '''
                     // Test
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Testing $x"
-                            version=`cat version_$x.txt`
-                            aws lambda invoke --function-name $x:$version --payload '{ "key": "value" }' // Todo test payload
-                        fi
-                    done;
                 '''
             }
         }
@@ -57,14 +41,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Deploying $x"
-                            version=`cat version_$x.txt`
-                            aws lambda update-alias --function-name $x --name $ENVIRONMENT --function-version $version
-                        fi
-                    done;
                 '''
             }
         }
