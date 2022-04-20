@@ -7,11 +7,6 @@ pipeline {
 
     stages {
         stage('Build') {
-            agent any
-            options {
-                timeout(time: 1, unit: 'MINUTES') 
-            }
-            steps {
                 sh '''
 			wget https://github.com/alanrox/aws-lambda-sg.git
 			unzip sokect.zip
