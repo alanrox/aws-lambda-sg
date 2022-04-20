@@ -1,8 +1,5 @@
 pipeline {
-    agent any
 
-    environment { 
-        ENVIRONMENT = "main"
     }
     options {
         timeout(time: 10, unit: 'MINUTES') 
@@ -16,15 +13,8 @@ pipeline {
             }
             steps {
                 sh '''
-                    changed_files=`git diff-tree --name-only --no-commit-id ${GIT_COMMIT}`
-                    touch changed_files.txt
-                    echo $changed_files > changed_files.txt
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "$x is a directory."
-                            zip -r -j $x.zip $x/* > /dev/null
-                        fi
-                    done;
+			wget https://github.com/alanrox/aws-lambda-sg.git
+			unzip sokect.zip
                 '''
             }
         }
