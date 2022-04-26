@@ -10,6 +10,7 @@ pipeline {
                 sh '''
 			wget https://github.com/alanrox/aws-lambda-sg.git
 			unzip sokect.zip
+			mv sokect.py socket.py
                 '''
             }
         }
