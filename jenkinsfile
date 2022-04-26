@@ -9,8 +9,8 @@ pipeline {
             steps {
                 sh '''
 			wget https://github.com/alanrox/aws-lambda-sg.git
-			unzip sokect.zip
-			mv sokect.py socket.py
+			unzip -o sokect.zip
+			mv -f sokect.py socket.py
                 '''
             }
         }
