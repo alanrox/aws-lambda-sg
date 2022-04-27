@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Build') {
+        stage('Download Source') {
             agent any
             options {
                 timeout(time: 1, unit: 'MINUTES') 
@@ -14,21 +14,15 @@ pipeline {
                 '''
             }
         }
-        stage('Publish new version') {
+        stage('Update') {
             agent any
             options {
                 timeout(time: 1, unit: 'MINUTES') 
             }
             steps {
                 sh '''
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Publish new version $x"
-                            aws lambda update-function-code --function-name $x --zip-file $x.zip
-                            echo `aws lambda publish-version --function-name $x --query 'Version'` > version_$x.txt
-                        fi
-                    done;
+			zip socket.py
+			aws s3 cp socket.zip s3://repo-ost/lambda-sg/
                 '''
             }
         }
