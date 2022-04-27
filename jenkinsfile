@@ -21,7 +21,7 @@ pipeline {
             }
             steps {
                 sh '''
-			zip socket.py
+			zip socket.zip socket.py
 			aws s3 cp socket.zip s3://repo-ost/lambda-sg/
                 '''
             }
