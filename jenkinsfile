@@ -14,7 +14,7 @@ pipeline {
                 '''
             }
         }
-        stage('Update') {
+        stage('Upload') {
             agent any
             options {
                 timeout(time: 1, unit: 'MINUTES') 
@@ -26,25 +26,6 @@ pipeline {
                 '''
             }
         }
-        stage('Test') {
-            agent any
-            options {
-                timeout(time: 1, unit: 'MINUTES') 
-            }
-            steps {
-                sh '''
-                    // Test
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Testing $x"
-                            version=`cat version_$x.txt`
-                            aws lambda invoke --function-name $x:$version --payload '{ "key": "value" }' // Todo test payload
-                        fi
-                    done;
-                '''
-            }
-        }
         stage('Deploy') {
             agent any
             options {
@@ -52,14 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    changed_files=`cat changed_files.txt`
-                    for x in $changed_files; do
-                        if [ -d "$x" ]; then
-                            echo "Deploying $x"
-                            version=`cat version_$x.txt`
-                            aws lambda update-alias --function-name $x --name $ENVIRONMENT --function-version $version
-                        fi
-                    done;
+			aws lambda update-function-code --function-name lambda-sg --zip-file s3://repo-ost/lambda-sg/socket.zip
                 '''
             }
         }
