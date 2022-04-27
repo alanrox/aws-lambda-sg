@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-			aws lambda update-function-code --function-name lambda-sg --zip-file fileb://socket.zip
+			aws lambda update-function-code --function-name lambda-sg --region us-east-1 --zip-file fileb://socket.zip
                 '''
             }
         }
